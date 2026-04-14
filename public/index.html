@@ -128,8 +128,8 @@ async function loadNotes() {
                 <small>${n.time}</small>
             </div>
             <div>
-                <button class="edit-btn" onclick="editNote(${n.id})">✏️</button>
-                <button class="delete-btn" onclick="deleteNote(${n.id})">❌</button>
+                <button class="edit-btn" onclick="editNote('${n._id}')">✏️</button>
+                <button class="delete-btn" onclick="deleteNote('${n._id}')">❌</button>
             </div>
         </li>`;
     });
