@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes App</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: white;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        .container {
+            background: white;
+            color: black;
+            width: 350px;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        input {
+            width: 70%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .add-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .edit-btn {
+            background: orange;
+            color: white;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f4f4f4;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-text {
+            text-align: left;
+        }
+
+        small {
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>📝 Notes App</h2>
+
+<div class="container">
+    <input id="noteInput" placeholder="Enter note">
+    <button class="add-btn" onclick="addNote()">Add</button>
+
+    <ul id="list"></ul>
+</div>
+
+<script>
+
+// CREATE
+async function addNote() {
+    const text = document.getElementById("noteInput").value;
+
+    if (!text) return alert("Enter something!");
+
+    await fetch('/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+    });
+
+    document.getElementById("noteInput").value = "";
+    loadNotes();
+}
+
+// READ
+async function loadNotes() {
+    const res = await fetch('/notes');
+    const data = await res.json();
+
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+
+    data.forEach(n => {
+        list.innerHTML += `
+        <li>
+            <div class="note-text">
+                <b>${n.text}</b><br>
+                <small>${n.time}</small>
+            </div>
+            <div>
+                <button class="edit-btn" onclick="editNote(${n.id})">✏️</button>
+                <button class="delete-btn" onclick="deleteNote(${n.id})">❌</button>
+            </div>
+        </li>`;
+    });
+}
+
+// UPDATE
+async function editNote(id) {
+    const newText = prompt("Edit your note:");
+
+    if (!newText) return;
+
+    await fetch('/notes/' + id, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: newText })
+    });
+
+    loadNotes();
+}
+
+// DELETE
+async function deleteNote(id) {
+    await fetch('/notes/' + id, {
+        method: 'DELETE'
+    });
+
+    loadNotes();
+}
+
+loadNotes();
+
+</script>
+
+</body>
+</html>
