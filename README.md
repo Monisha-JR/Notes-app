@@ -27,6 +27,15 @@ Deployment screenshots are included below.
 ### Application Output
 ![App](images/notesapp.png)
 
+### ECR DEPLOYMENT
+![Deployment](images/ecr.png)
+
+### Kubernetes Status
+![minikube](images/terminal.png)
+
+### Docker images
+![Docker](images/dockerimages.png)
+
 ## Learning Outcomes
 - Backend development using Node.js
 - Database integration with MongoDB
