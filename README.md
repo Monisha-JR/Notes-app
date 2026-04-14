@@ -22,10 +22,10 @@ Deployment screenshots are included below.
 ## Screenshots
 
 ### AWS Deployment
-![Deployment](images/deployment.png)
+![Deployment](images/ebs.png)
 
 ### Application Output
-![App](images/app.png)
+![App](images/notesapp.png)
 
 ## Learning Outcomes
 - Backend development using Node.js
